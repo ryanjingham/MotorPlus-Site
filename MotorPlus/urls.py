@@ -23,7 +23,8 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('', views.index_view, name='index'),
     path('logout/', views.logout_view, name='logout'),
-    path('add_vehicle', views.add_vehicle_view, name='add_vehicle'),
+    path('add_vehicle', views.add_vehicle_simple, name='add_vehicle_simple'),
+    path('add_vehicle_full', views.add_vehicle_full, name='add_vehicle_full'),
     path('vehicle_details/<int:pk>', views.vehicle_details_view, name='vehicle_details')
 ]
 urlpatterns+=staticfiles_urlpatterns()

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, UserRegistrationForm, VehicleForm
+from .forms import LoginForm, UserRegistrationForm, VehicleFormSimple, VehicleFormFull
 from .models import Vehicle, APIVehicle
 from keras.models import load_model
 import requests
@@ -83,26 +83,44 @@ def logout_view(request):
     return redirect('login')
 
 
-def add_vehicle_view(request):
+def add_vehicle_simple(request):
     if request.method == 'POST':
-        make = request.POST.get('make')
-        model = request.POST.get('model')
-        year = request.POST.get('year')
+        form = VehicleFormSimple(request.POST)
+        print(form.errors)
+        make = form.cleaned_data['make']
+        model = form.cleaned_data['model']
+        year = form.cleaned_data['year']
+        transmission = form.cleaned_data['transmission']
         
         # API call to get the rest of the information
-        url = VEHICLES_API_URL + f"limit=1&make={make}&model={model}&year={year}"
-        response = requests.get(url, headers={'X-Api-Key': VEHICLES_API_KEY})
-        data = response.json()
+        
+        url = VEHICLES_API_URL + f"limit=1&make={make}&model={model}&year={year}&transmission={transmission}"
+        try:
+            response = requests.get(url, headers={'X-Api-Key': VEHICLES_API_KEY})
+            data = response.json()
+            print(data)
+        except requests.exceptions.HTTPError as e:
+            print("vehicle not found in API")
+            return redirect('add_vehicle_full')
         
         # Extract the necessary information from the API response
-        vehicle_class = data['class']
-        fuel_type = data['fuel_type']
-        transmission = data['transmission']
-        city_mpg = data['city_mpg']
-        highway_mpg = data['highway_mpg']
-        displacement = data['displacement']
-        cylinders = data['cylinders']
-        combination_mpg = 0
+        vehicle_class = data[0]['class']
+        fuel_type = data[0]['fuel_type']
+        transmission = data[0]['transmission']
+        city_mpg = data[0]['city_mpg']
+        highway_mpg = data[0]['highway_mpg']
+        displacement = data[0]['displacement']
+        cylinders = data[0]['cylinders']
+        combination_mpg_api = data[0]['combination_mpg']
+        
+        # vehicle_class = form.cleaned_data['class']
+        # transmission = form.cleaned_data['transmission']
+        # city_mpg = form.cleaned_data['city_mpg']
+        # highway_mpg = form.cleaned_data['highway_mpg']
+        # displacement = form.cleaned_data['displacement']
+        # cylinders = form.cleaned_data['cylinders']
+        # combination_mpg_api = 0
+        # combination_mpg_predicted = 0
         
         # Save the information to the database
         user = request.user
@@ -111,19 +129,59 @@ def add_vehicle_view(request):
             make=make,
             model=model,
             year=year,
-            class_ = vehicle_class,
+            vehicle_class = vehicle_class,
             transmission = transmission,
             city_mpg = city_mpg,
             highway_mpg = highway_mpg,
             displacement = displacement,
             cylinders = cylinders,
-            combination_mpg_api = combination_mpg
+            combination_mpg_api = combination_mpg_api,
+            combination_mpg_predicted = 0
         )
         
-        return redirect('vehicles')
+        return redirect('index')
     else:
-        return render(request, 'create_vehicle.html')
+        form = VehicleFormSimple()
+        return render(request, 'add_vehicle.html', {'form': form})
     
+def add_vehicle_full(request):
+    if request.method == 'POST':
+        form = VehicleFormFull(request.POST)
+        make = form.cleaned_data['make']
+        model = form.cleaned_data['model']
+        year = form.cleaned_data['year']    
+
+        
+        vehicle_class = form.cleaned_data['class']
+        transmission = form.cleaned_data['transmission']
+        city_mpg = form.cleaned_data['city_mpg']
+        highway_mpg = form.cleaned_data['highway_mpg']
+        displacement = form.cleaned_data['displacement']
+        cylinders = form.cleaned_data['cylinders']
+        combination_mpg_api = 0
+        combination_mpg_predicted = 0
+
+        user = request.user
+        vehicle = Vehicle.objects.create(
+            user=user,
+            make=make,
+            model=model,
+            year=year,
+            vehicle_class = vehicle_class,
+            transmission = transmission,
+            city_mpg = city_mpg,
+            highway_mpg = highway_mpg,
+            displacement = displacement,
+            cylinders = cylinders,
+            combination_mpg_api = combination_mpg_api,
+            combination_mpg_predicted = 0
+        )
+        
+        return redirect('index')
+    else:
+        form = VehicleFormFull()
+        return render(request, 'add_vehicle_full.html', {'form': form})
+
 def make_prediction_view(request, pk):
     user = request.user
     if user.is_authenticated():
@@ -153,3 +211,6 @@ def make_prediction_view(request, pk):
 
         # Redirect to the vehicle detail view
         return redirect('vehicle_details', pk=pk)
+    
+def vehicle_details_view(request, pk):
+    pass

@@ -1,6 +1,5 @@
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,7 +18,7 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-2 d-flex flex-column navbar navbar-light bg-light">
+        <nav class="col-2 d-flex flex-column navbar navbar-dark bg-dark">
           <form class="d-flex mt-3 mb-3">
             <input
               class="form-control"
@@ -51,7 +50,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="{% url 'add_vehicle' %}"
+                  <a class="dropdown-item" href="{% url 'add_vehicle_simple' %}"
                     >Add Vehicle</a
                   >
                 </li>
@@ -73,9 +72,7 @@
             </li>
           </ul>
         </nav>
-        <div class="col-10">
-          <!-- Add your main content here -->
-        </div>
+        <div class="col-10">{% block content %}{% endblock %}</div>
       </div>
     </div>
     <script

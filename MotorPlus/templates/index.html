@@ -1,39 +1,35 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mt-5"></div>
 
-{% block content %}
-  <div class="container mt-5"></div>
+<!-- Map section -->
+<div id="map" style="height: 400px; width: 100%"></div>
 
-    <!-- Map section -->
-  <div id="map" style="height: 400px; width: 100%;"></div>
+<!-- Load the OpenLayers library -->
+<script src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"></script>
 
-  <!-- Load the OpenLayers library -->
-  <script src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"></script>
+<!-- Load the OpenLayers CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css" />
 
-  <!-- Load the OpenLayers CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css">
-
-  <!-- Initialize the map -->
-  <script>
-    var map = new ol.Map({
-      target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      view: new ol.View({
-        zoom: 13
+<!-- Initialize the map -->
+<script>
+  var map = new ol.Map({
+    target: "map",
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM(),
       }),
-      controls: ol.control.defaults.defaults().extend([
-        new ol.control.ScaleLine(),
-        new ol.control.Attribution()
-      ])
-    });
+    ],
+    view: new ol.View({
+      zoom: 13,
+    }),
+    controls: ol.control.defaults
+      .defaults()
+      .extend([new ol.control.ScaleLine(), new ol.control.Attribution()]),
+  });
 
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var coords = [position.coords.longitude, position.coords.latitude];
-      map.getView().setCenter(ol.proj.fromLonLat(coords));
-    });
-  </script>
+  navigator.geolocation.getCurrentPosition(function (position) {
+    var coords = [position.coords.longitude, position.coords.latitude];
+    map.getView().setCenter(ol.proj.fromLonLat(coords));
+  });
+</script>
 {% endblock %}

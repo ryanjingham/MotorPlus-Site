@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <h1 class="text-center">Add Vehicle</h1>
+    <form method="post" action="{% url 'add_vehicle_simple' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="make">Make</label>
+        <input
+          type="text"
+          class="form-control"
+          id="make"
+          name="make"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="model">Model</label>
+        <input
+          type="text"
+          class="form-control"
+          id="model"
+          name="model"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="year">Year</label>
+        <input
+          type="text"
+          class="form-control"
+          id="year"
+          name="year"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="transmission">transmission</label>
+        <input
+          type="text"
+          class="form-control"
+          id="transmission"
+          name="transmission"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        Add Vehicle
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
