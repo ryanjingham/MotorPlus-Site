@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  {% if message %}
+  <div class="alert alert-danger" role="alert">{{ message }}</div>
+  {% endif %}
+  <h1 class="text-center">Vehicle Details</h1>
+  <div class="row">
+    <div class="col-md-6 m-auto"></div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Make</th>
+            <td>{{ vehicle.make }}</td>
+          </tr>
+          <tr>
+            <th>Model</th>
+            <td>{{ vehicle.model }}</td>
+          </tr>
+          <tr>
+            <th>Year</th>
+            <td>{{ vehicle.year }}</td>
+          </tr>
+          <tr>
+            <th>Transmission</th>
+            <td>{{ vehicle.transmission }}</td>
+          </tr>
+          <tr>
+            <th>Acceleration</th>
+            <td>{{ vehicle.acceleration }}</td>
+          </tr>
+          <tr>
+            <th>Displacement</th>
+            <td>{{ vehicle.displacement }}</td>
+          </tr>
+          <tr>
+            <th>Cylinders</th>
+            <td>{{ vehicle.cylinders }}</td>
+          </tr>
+          <tr>
+            <th>Horsepower</th>
+            <td>{{ vehicle.horsepower }}</td>
+          </tr>
+          <tr>
+            <th>Weight</th>
+            <td>{{ vehicle.weight }}</td>
+          </tr>
+          <tr>
+            <th>Origin</th>
+            <td>{{ vehicle.origin }}</td>
+          </tr>
+          <tr>
+            <th>MPG From API</th>
+            <td>{{ vehicle.combined_mpg_api }}</td>
+          </tr>
+          <tr>
+            <th>AI Predicted MPG</th>
+            {% if vehicle.combined_mpg_predicted == 0 %}
+            <td>{{ vehicle.combined_mpg_predicted }}</td>
+            {% else %}
+            <td>
+              <a
+                href="{% url 'make_prediction' vehicle.id %}"
+                class="btn btn-primary"
+                >Make Prediction</a
+              >
+            </td>
+            {% endif %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

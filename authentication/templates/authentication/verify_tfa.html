@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<!-- Use Bootstrap's grid system to structure the layout -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="post" class="form-signup">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 font-weight-normal text-center">
+          Verify Two-Factor Authentication
+        </h1>
+        <p class="text-center">
+          Please enter the 6-digit code from your email.
+        </p>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+        <div class="form-group">
+          <label for="verification_code">Verification Code:</label>
+          <input
+            type="text"
+            id="verification_code"
+            name="verification_code"
+            class="form-control"
+            placeholder="Enter verification code"
+            autofocus
+            required
+          />
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          Verify
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

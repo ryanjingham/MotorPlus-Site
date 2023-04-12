@@ -1,0 +1,112 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <h1 class="text-center">Add Vehicle Full</h1>
+    <form method="post" action="{% url 'add_vehicle_full' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="make">Make</label>
+        <input
+          type="text"
+          class="form-control"
+          id="make"
+          name="make"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="model">Model</label>
+        <input
+          type="text"
+          class="form-control"
+          id="model"
+          name="model"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="year">Year</label>
+        <input
+          type="text"
+          class="form-control"
+          id="year"
+          name="year"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="transmission">Transmission</label>
+        <input
+          type="text"
+          class="form-control"
+          id="transmission"
+          name="transmission"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="displacement">Displacement</label>
+        <input
+          type="text"
+          class="form-control"
+          id="displacement"
+          name="displacement"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="cylinders">Cylinders</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cylinders"
+          name="cylinders"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="horsepower">Horsepower</label>
+        <input
+          type="text"
+          class="form-control"
+          id="horsepower"
+          name="horsepower"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="weight">weight (kg)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="weight"
+          name="weight"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="acceleration">Acceleration (0-60 in seconds)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="acceleration"
+          name="acceleration"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="origin">Origin</label>
+        <select class="form-control" id="origin" name="origin" required>
+          <option value="USA">USA</option>
+          <option value="Japan">Japan</option>
+          <option value="Europe">Europe</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        Add Vehicle
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

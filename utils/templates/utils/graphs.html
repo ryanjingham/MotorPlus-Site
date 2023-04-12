@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %}
+<h1>MPG Differences</h1>
+{% if vehicles %}
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  {% for vehicle in vehicles %}
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">{{ vehicle.make }} {{ vehicle.model }}</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">Actual MPG: {{ vehicle.combination_mpg_api }}</p>
+        <p class="card-text">
+          Predicted MPG: {{ vehicle.combination_mpg_predicted }}
+        </p>
+        <p class="card-text">
+          MPG Difference: {{ vehicle.combination_mpg_api|floatformat:2 }} - {{
+          vehicle.combination_mpg_predicted|floatformat:2 }} = {{
+          vehicle.combination_mpg_api|floatformat:2|float -
+          vehicle.combination_mpg_predicted|floatformat:2|float }}
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% if chart_path %}
+<h2>MPG Difference Chart</h2>
+<img src="{{ chart_path }}" alt="MPG Difference Chart" />
+{% endif %} {% else %}
+<p>No vehicles found.</p>
+{% endif %} {% endblock %}
