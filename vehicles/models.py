@@ -13,6 +13,8 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=30)
     model = models.CharField(max_length=30)
     year = models.IntegerField()
+    name = models.CharField(max_length=30)
+    is_custom = models.BooleanField(default=False)
     transmission = models.CharField(max_length=1)
     displacement = models.FloatField()
     cylinders = models.FloatField()
@@ -28,3 +30,6 @@ class APIVehicle(models.Model):
     model = models.CharField(max_length=30)
     year = models.IntegerField()
     #APIInfo = JSONField()
+    
+    
+    

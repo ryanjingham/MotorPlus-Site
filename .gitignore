@@ -1,2 +1,3 @@
 djangovenv/
-.env
+.env/
+static_collected/

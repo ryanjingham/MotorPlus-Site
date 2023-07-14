@@ -1,10 +1,48 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %}{% load static %}
 
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <h1 class="text-center">Add Vehicle Full</h1>
     <form method="post" action="{% url 'add_vehicle_full' %}">
       {% csrf_token %}
+      <div class="card mb-3">
+        <div class="card-header">Helpful Links</div>
+        <div class="card-body">
+          <ul>
+            <li><a href="https://www.ultimatespecs.com/">Ultimate Specs</a></li>
+            <li><a href="https://www.carfolio.com/">Carfolio</a></li>
+            <li><a href="https://www.auto-data.net/en/">Auto Data</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="vehicle_type">Vehicle Type</label>
+        <select
+          class="form-control"
+          id="vehicle-type"
+          name="vehicle_type"
+          required
+        >
+          <option value="regular">Regular Vehicle</option>
+          <option value="custom">Custom Vehicle</option>
+        </select>
+      </div>
+
+      <div id="custom-fields-container">
+        <div class="form-group">
+          <label for="vehicle_name">Vehicle Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="vehicle_name"
+            name="vehicle_name"
+            required
+          />
+        </div>
+        <input type="hidden" name="make" value="" />
+        <input type="hidden" name="model" value="" />
+      </div>
+
       <div class="form-group">
         <label for="make">Make</label>
         <input
@@ -25,6 +63,7 @@
           required
         />
       </div>
+
       <div class="form-group">
         <label for="year">Year</label>
         <input
@@ -36,22 +75,12 @@
         />
       </div>
       <div class="form-group">
-        <label for="transmission">Transmission</label>
+        <label for="transmission">Transmission (a or m)</label>
         <input
           type="text"
           class="form-control"
           id="transmission"
           name="transmission"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="displacement">Displacement</label>
-        <input
-          type="text"
-          class="form-control"
-          id="displacement"
-          name="displacement"
           required
         />
       </div>
@@ -62,7 +91,15 @@
           class="form-control"
           id="cylinders"
           name="cylinders"
-          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="displacement">Displacement</label>
+        <input
+          type="text"
+          class="form-control"
+          id="displacement"
+          name="displacement"
         />
       </div>
       <div class="form-group">
@@ -76,7 +113,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="weight">weight (kg)</label>
+        <label for="weight">Weight (kg)</label>
         <input
           type="text"
           class="form-control"
@@ -103,10 +140,41 @@
           <option value="Europe">Europe</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary btn-block">
+      <button type="submit" class="btn btn-primary btn-block mt-4">
         Add Vehicle
       </button>
     </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    // Get the select element
+    const select = document.getElementById("vehicle-type");
+
+    // Get the make and model elements
+    const makeLabel = document.querySelector("label[for=make]");
+    const modelLabel = document.querySelector("label[for=model]");
+    const make = document.getElementById("make");
+    const model = document.getElementById("model");
+
+    // Listen for changes in the select element
+    select.addEventListener("change", (event) => {
+      if (event.target.value === "regular") {
+        // Show make and model labels if Regular Vehicle is selected
+        makeLabel.style.display = "block";
+        modelLabel.style.display = "block";
+        make.style.display = "block";
+        model.style.display = "block";
+      } else {
+        // Hide make and model labels if Custom Vehicle is selected
+        makeLabel.style.display = "none";
+        modelLabel.style.display = "none";
+        make.style.display = "none";
+        model.style.display = "none";
+      }
+    });
+  });
+</script>
+
 {% endblock %}

@@ -6,11 +6,14 @@ class EmailBackend(ModelBackend):
         UserModel = get_user_model()
         try:
             user = UserModel.objects.get(email=email)
+            print(user)
         except UserModel.DoesNotExist:
             return None
 
         if user.check_password(password):
+            print('password checked correctly')
             return user
+        print('password not checked correctly')
         return None
 
     def get_user(self, user_id):
@@ -19,3 +22,6 @@ class EmailBackend(ModelBackend):
             return UserModel.objects.get(pk=user_id)
         except UserModel.DoesNotExist:
             return None
+        
+        
+        
